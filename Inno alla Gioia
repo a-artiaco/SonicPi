@@ -1,0 +1,45 @@
+# Inno alla Gioia Beethoven 
+# sonicPi
+# Antonio Artiaco 
+# use function with Define n.times for replay e live_loop.
+use_bpm 90
+use_synth :piano
+'
+live_loop :arp do
+  #play [:c, :e, :d, :f].ring.tick, release: 0.1 # scritture equivalenti
+  play (ring,:c, :e, :d, :f).tick, release: 0.1 # scritture equivalenti
+  sleep 0.125
+end
+'
+a= (ring, 64,64,65,67,67,65,64,62,60,60,62,64)
+
+
+define :gioia do
+  b= 0
+  with_fx :distortion do
+    2.times do
+      b= b+1
+      12.times do
+        play a.tick, sustain: 0.3, attack: 0.2
+        sleep 0.5
+      end
+      if b==1
+        play_pattern_timed [64,62,62],[1.5, 0.5, 2]
+      else
+        play_pattern_timed [64,60,60],[1.5, 0.5, 2]
+      end
+    end
+  end
+end
+
+
+gioia
+
+with_fx :reverb, room: 0.2 do
+  with_fx :distortion do
+    play_pattern_timed [62,62,64,60,62,64,65,64,60,62,64,65,64,62,60,62,55,64],
+      [0.5,0.5,0.5,0.5,0.5,0.25,0.25,0.5,0.5,0.5,0.25,0.25,0.5,0.5,0.5,0.5,0.5,0.5]
+  end
+end
+
+gioia
